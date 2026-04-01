@@ -1,10 +1,11 @@
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 import PlayerArea from "../components/PlayerArea";
 import GameInfo from "../components/GameInfo";
 import { generateDeck, shuffleDeck, getCardRank } from "../utils/deckUtils";
 import type { GameState } from "../types/game";
 import type { Card } from "../types/card";
 import type  {PAGE} from "../types/page"
+import { sendRequest } from "../utils/api";
 
 interface Props {
   changePage: (page: PAGE) => void;
@@ -102,6 +103,17 @@ const GamePage = (props: Props) =>  {
   }
   const [state, dispatch] = useReducer(reducer, undefined, createInitialState);
 
+  useEffect(() => {
+  if (!state.gameOver || !state.winner) return;
+
+  const body = new URLSearchParams({
+    rounds: String(roundCount),
+    didWin: String(winner === "player"),
+  });
+
+  sendRequest("/api/games/finish", "POST", body);
+}, [state.gameOver]);
+
   const {
     playerDeck, computerDeck,
     playerCard, computerCard,
@@ -164,6 +176,7 @@ const GamePage = (props: Props) =>  {
         <button onClick={() => dispatch({ type: "NEW_GAME" })}>
           New Game
         </button>
+        <button onClick={() => changePage("HISTORY")}>View History</button>
         <button onClick={() => logOff()}>Log off</button>
       </div>
     </div>

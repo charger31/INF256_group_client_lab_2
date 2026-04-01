@@ -1,1 +1,1 @@
-export type PAGE = "USER" | "GAME";
+export type PAGE = "USER" | "GAME" | "HISTORY";

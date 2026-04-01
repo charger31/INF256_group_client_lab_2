@@ -3,17 +3,16 @@ import "./App.css";
 import type { PAGE } from "./types/page";
 import UserPage from "./pages/UserPage";
 import GamePage from "./pages/gamePage";
+import HistoryPage from "./pages/HistoryPage";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<PAGE>("USER");
 
-  return (
+   return (
     <>
-      {currentPage === "USER" ? (
-        <UserPage changePage={setCurrentPage} />
-      ) : (
-        <GamePage changePage={setCurrentPage} />
-      )}
+      {currentPage === "USER" && <UserPage changePage={setCurrentPage} />}
+      {currentPage === "GAME" && <GamePage changePage={setCurrentPage} />}
+      {currentPage === "HISTORY" && <HistoryPage changePage={setCurrentPage} />}
     </>
   );
 }
