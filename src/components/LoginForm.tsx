@@ -21,16 +21,13 @@ const LoginForm = (props: Props) => {
         name,
         password,
       });
-      const response = await sendRequest("/user", "POST", body);
+  const response = await sendRequest("/api/login", "POST", body);
       if (response.ok) {
-        const data: LoginPayload = await response.json();
-        if (data.status == "success") {
-          localStorage.setItem("jwt", JSON.stringify(data.data.token));
-          localStorage.setItem("user", JSON.stringify(data.data.user));
-          changePage("GAME");
-        }
+        const data = await response.json();
+        localStorage.setItem("jwt", JSON.stringify(data.token));
+        changePage("GAME");
       } else {
-        console.log("Set the error here: ");
+        console.log("Set the error here");
       }
     }
   };

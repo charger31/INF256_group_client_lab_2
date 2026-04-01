@@ -13,11 +13,10 @@ export const sendRequest = async (
   };
 
   const jwt = localStorage.getItem("jwt");
-  if (jwt) {
-    options.headers = {
-      authorization: "Bearer " + JSON.parse(jwt),
-    };
-  }
+  options.headers = {
+  "Content-Type": "application/x-www-form-urlencoded",
+  ...(jwt && { authorization: "Bearer " + JSON.parse(jwt) }),
+};
 
   const response = await fetch(url, options);
 

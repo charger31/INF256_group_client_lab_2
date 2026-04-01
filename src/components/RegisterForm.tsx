@@ -11,25 +11,20 @@ const RegisterForm = (props: Props) => {
 
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [password2, setPassword2] = useState<string>("");
 
   const onSubmit = async () => {
     //Need to send the data to the server here
-    if (name.length > 0 && password.length > 0 && password2.length > 0) {
+    if (name.length > 0 && password.length > 0) {
       //Send the data up
       const body = new URLSearchParams({
         name,
         password,
-        password2,
       });
-      const response = await sendRequest("/user/register", "POST", body);
+      const response = await sendRequest("/api/register", "POST", body);
       if (response.ok) {
-        const data: RegisterPayload = await response.json();
-        if (data.status == "success") {
-          showLogin();
-        }
+        showLogin();
       } else {
-        console.log("Set the error here: ");
+        console.log("Set the error here");
       }
     }
   };
@@ -50,14 +45,6 @@ const RegisterForm = (props: Props) => {
             type={"password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <label>
-          Retype Password:{" "}
-          <input
-            type={"password"}
-            value={password2}
-            onChange={(e) => setPassword2(e.target.value)}
           />
         </label>
         <button onClick={() => onSubmit()}>Log in</button>
